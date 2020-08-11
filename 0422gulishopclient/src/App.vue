@@ -1,28 +1,24 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Header></Header>
+    <router-view></router-view>
+    <!-- 判断路由对象在那个组件,如果该组件不显示footer,则隐藏footer组件(比如login) -->
+    <!-- <Footer
+      v-if="$route.path !== '/Login' || $route.path === '/Search'"
+    ></Footer> -->
+    <!-- 从meta里面拿配置的布尔值,用来控制footer是否显示 -->
+    <Footer v-if="!$route.meta.isHide"></Footer>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    Header,
+    Footer,
+  },
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style scoped></style>
