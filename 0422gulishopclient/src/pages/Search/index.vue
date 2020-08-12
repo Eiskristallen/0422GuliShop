@@ -1,9 +1,10 @@
 <template>
   <div>
-    Search params: {{ $route.params.keyWord }} query:{{
+    <!-- Search params: {{ $route.params.keyWord }} query:{{
       $route.query.keyWord
     }}
-    easy params:{{ keyWord }} easy query:{{ keyWord2 }}
+    easy params:{{ keyWord }} easy query:{{ keyWord2 }} -->
+    <Type-nav></Type-nav>
   </div>
 </template>
 
