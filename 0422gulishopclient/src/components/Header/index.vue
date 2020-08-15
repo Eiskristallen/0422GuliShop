@@ -84,12 +84,17 @@ export default {
         name: 'Search',
         params: {
           //如果params是一个空串的话,则直接带过去一个undefined,undefined在前后端交互的时候代表什么都不传
-          keyWord: this.keyWord || null,
+          keyWord: this.keyWord || undefined,
         },
-        query: {
-          keyWord: this.keyWord.toUpperCase(),
-        },
+        //点search的时候要先判断是否有query参数,如果有要和params拼在一起然后导航至该页面
+
+        // query: {
+        //   keyWord: this.keyWord.toUpperCase(),
+        // },
       };
+      if (this.$route.query) {
+        location.query = this.$route.query;
+      }
 
       // 编程式导航,因为没写组件标签,所以内存中不会有组件对象
       //所以编程式导航会比组件标签快

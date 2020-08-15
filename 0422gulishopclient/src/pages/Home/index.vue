@@ -5,8 +5,8 @@
     <Recommend></Recommend>
     <Rank></Rank>
     <Like></Like>
-    <Floor></Floor>
-    <Floor></Floor>
+    <!-- 写一个floor,然后用数据遍历 -->
+    <Floor v-for="floor of floorList" :key="floor.id" :floor="floor"></Floor>
     <Brand></Brand>
   </div>
 </template>
@@ -19,7 +19,13 @@ import Rank from './Rank';
 import Like from './Like';
 import Floor from './Floor';
 import Brand from './Brand';
+import { mapState } from 'vuex';
 export default {
+  computed: {
+    ...mapState({
+      floorList: (state) => state.home.floorList,
+    }),
+  },
   components: {
     ListContainer,
     Recommend,
@@ -29,6 +35,22 @@ export default {
     Brand,
   },
   name: 'Home',
+  mounted() {
+    this.getCategoryList();
+    // this.getBannerList();
+    this.getFloorList();
+  },
+  methods: {
+    getCategoryList() {
+      this.$store.dispatch('getCategoryList');
+    },
+    // getBannerList() {
+    //   this.$store.dispatch('getbannerList');
+    // },
+    getFloorList() {
+      this.$store.dispatch('getfloorList');
+    },
+  },
 };
 </script>
 

@@ -3,28 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
-            </div>
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner2.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner3.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner4.jpg" />
-            </div> -->
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Swiper :bannerList="bannerList"></Swiper>
       </div>
       <div class="right">
         <div class="news">
@@ -100,8 +79,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'ListContainer',
+  //拿数据
+  mounted() {
+    this.$store.dispatch('getbannerList');
+    // this.$store.dispatch('getfloorList');
+  },
+
+  computed: {
+    // bannerList: {
+    //   get() {
+    //     return this.$store.home.state.bannerList;
+    //   },
+    // },
+    // floorList: {
+    //   get() {
+    //     return this.$store.home.state.floorList;
+    //   },
+    // },
+    ...mapState({ bannerList: (state) => state.home.bannerList }),
+    // ...mapState({ floorList: (state) => state.home.floorList }),
+  },
 };
 </script>
 
