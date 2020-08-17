@@ -24,3 +24,32 @@ export const reqFloor = () => {
     method: 'get',
   });
 };
+/*
+
+
+{
+      return {
+        category3Id: '61',
+        categoryName: '手机',
+
+        keyword: '小米',
+        order: '1:desc',
+        pageNo: '1',
+        pageSize: '10',
+        props: ['1:1700-2799:价格', '2:6.65-6.74英寸:屏幕尺寸'],
+        trademark: '4:小米',
+      };
+    },
+ */
+//searchParams代表搜索参数,这个参数必须有好友,至少得是一个没有属性的空对象
+//如果是个空对象,获取的是全部的数据怒
+//如果有属性,获取的是搜索条件匹配的数据
+export const reqGoodsListInfo = (searchParams) => {
+  return Ajax({
+    url: '/list',
+    method: 'post',
+    data: searchParams,
+  });
+};
+//该请求参数由组件返回(用户搜索的关键词)
+// reqGoodsListInfo({});

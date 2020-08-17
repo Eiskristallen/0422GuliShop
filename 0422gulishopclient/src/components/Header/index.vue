@@ -104,7 +104,11 @@ export default {
       //也可以用对象写路径和要穿进去的params
       // this.$router.push(`/Search`); 字符串形式
       //vue router3.0以上这个push返回的是promise,所以如果push不处理的话,连续点击会出现duplicated navigation
-      this.$router.push(location);
+      if (this.$route.path === '/Home') {
+        this.$router.push(location);
+      } else {
+        this.$router.replace(location);
+      }
     },
   },
 };

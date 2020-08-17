@@ -4,6 +4,7 @@ Vue.use(Vuex);
 // 把这俩合并到state里面,方便集中管理
 import user from './User';
 import home from './Home';
+import search from './Search';
 
 const state = {};
 const getters = {};
@@ -19,5 +20,6 @@ export default new Vuex.Store({
   modules: {
     user,
     home,
+    search,
   },
 });

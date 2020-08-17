@@ -216,8 +216,11 @@ export default {
         if (this.$route.params) {
           location.params = this.$route.params;
         }
-        this.$router.push(location);
-        console.log(location);
+        if (this.$route.path === '/Home') {
+          this.$router.push(location);
+        } else {
+          this.$router.replace(location);
+        }
       }
     },
     //挂载完毕后调用Vuex里面的getCategoryList发送请求,然后Home组件的state里面就能拿到数据
