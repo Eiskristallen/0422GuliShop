@@ -9,6 +9,8 @@ import '@/Mock/mockServer';
 //全局引入swiper css
 import 'swiper/css/swiper.min.css';
 import Swiper from '@/components/Swiper';
+//注册分页器
+import Pagination from '@/components/Pagination';
 //因为api里面暴露的是一个方法,就可以直接引入里面的方法
 // import { reqCategoryList } from './Api';
 //组件三大步:定义 注册  使用
@@ -16,7 +18,11 @@ Vue.config.productionTip = false;
 //全局都要用的type-nav,直接全局注册
 Vue.component('Type-nav', Typenav);
 Vue.component('Swiper', Swiper);
+Vue.component('Pagination', Pagination);
 new Vue({
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  },
   el: document.getElementById('app'),
   //注入路由功能1,让组件能够通过$route和$router拿到路由上的东西
   router,

@@ -5,6 +5,7 @@ import VueRoute from 'vue-router';
 import routers from './routers';
 //注册插件,注册时会调用插件里面的install方法
 Vue.use(VueRoute);
+
 //new一个VueRoute对象
 //处理vue-router上面的push方法,让他能够catch错误,彻底解决navigation duplicated问题
 //先获取原方法
@@ -30,9 +31,9 @@ VueRoute.prototype.replace = function(location, onResolved, onRejected) {
     return originReplace.call(this, location, onResolved, onRejected);
   }
 };
-const router = new VueRoute(
-  routers
-  //路由配置对象,数组里面每一个对象都是一个路由组件
-);
+
+const router = new VueRoute(routers);
+
+//路由配置对象,数组里面每一个对象都是一个路由组件
 //export VueRoute对象
 export default router;

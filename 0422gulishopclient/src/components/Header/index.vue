@@ -73,8 +73,15 @@ export default {
       keyWord: '',
     };
   },
+  mounted() {
+    this.$bus.$on('clearKeyWord', this.clearKeyWord);
+  },
   name: 'Header',
   methods: {
+    clearKeyWord() {
+      this.keyWord = '';
+    },
+
     //这是点击按钮的时候,会带着params和query
     toSearch() {
       let location = {

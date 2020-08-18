@@ -48,8 +48,18 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: orderId === '1' }">
+                  <a href="javascript:;" @click="changeOrder('1')">
+                    <i
+                      class="iconfont"
+                      :class="{
+                        iconup: orderType === 'asc',
+                        icondown: orderType === 'desc',
+                      }"
+                      v-if="orderId === '1'"
+                    ></i>
+                    综合</a
+                  >
                 </li>
                 <li>
                   <a href="#">销量</a>
@@ -60,11 +70,18 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: orderId === '2' }">
+                  <a href="javascript:;" @click="changeOrder('2')">
+                    <i
+                      class="iconfont"
+                      :class="{
+                        iconup: orderType === 'asc',
+                        icondown: orderType === 'desc',
+                      }"
+                      v-if="orderId === '2'"
+                    ></i>
+                    价格
+                  </a>
                 </li>
               </ul>
             </div>
@@ -74,9 +91,9 @@
               <li class="yui3-u-1-5" v-for="good of goodList" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
-                      ><img :src="good.defaultImg"
-                    /></a>
+                    <router-link :to="`Detail/${good.id}`">
+                      <img :src="good.defaultImg" />
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -440,7 +457,15 @@
               </li> -->
             </ul>
           </div>
-          <div class="fr page">
+          <!-- 传入当前页和总数据量,和每页显示的数量 -->
+          <Pagination
+            :currentPageNum="searchParams.pageNo"
+            :total="GoodList.total"
+            :pageSize="searchParams.pageSize"
+            :continueSize="3"
+            @changePageNum="changePageNum"
+          ></Pagination>
+          <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
               <ul>
                 <li class="prev disabled">
@@ -468,7 +493,7 @@
               </ul>
               <div><span>共10页&nbsp;</span></div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -477,21 +502,21 @@
 
 <script>
 import SearchSelector from './SearchSelector/SearchSelector';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   data() {
     return {
       //初始化用户搜索参数,里面放的是所有用户可能搜索的所有条件,但是初始为空
       searchParams: {
-        category1Id: '',
-        category2Id: '',
-        category3Id: '',
+        category1id: '',
+        category2id: '',
+        category3id: '',
         categoryName: '',
         keyword: '',
-        order: '1:desc',
-        pageNo: 1,
-        pageSize: 5,
+        order: '2:desc',
+        pageNo: 6,
+        pageSize: 2,
         props: [],
         trademark: '',
       },
@@ -536,12 +561,37 @@ export default {
     //用户传过来的search参数
     this.getInfor();
   },
+
   methods: {
+    changePageNum(page) {
+      this.searchParams.pageNo = page;
+      this.getInfor();
+    },
+    //点击综合或价格排序的切换方法
+    changeOrder(orderId) {
+      let originOrderId = this.searchParams.order.split(':')[0];
+      let originOrderType = this.searchParams.order.split(':')[1];
+
+      let newOrderId = '';
+      //如果这俩相等,代表点的还是原来的标签
+      if (orderId === originOrderId) {
+        //此时只需要改变排序类型
+        newOrderId = `${orderId}:${
+          originOrderType === 'desc' ? 'asc' : 'desc'
+        }`;
+      } else {
+        //代表点击的不是原来的标签,需要根据传过来的orderID改变要排序的类型,后面的排序类型默认为降序
+        newOrderId = `${orderId}:desc`;
+      }
+      this.searchParams.order = newOrderId;
+      this.getInfor();
+    },
     getInfor() {
       this.$store.dispatch('getGoodListInfo', this.searchParams);
     },
 
     searchByAttr(attr, attrValue) {
+      this.searchParams.pageNo = 1;
       // if (
       //   this.searchParams.props.some(
       //     (item) => item === `${attr.attrId}:${attrValue}:${attr.attrName}`
@@ -563,6 +613,7 @@ export default {
     },
 
     searchByBrand(trademark) {
+      this.searchParams.pageNo = 1;
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.handleSearchParams();
     },
@@ -570,19 +621,21 @@ export default {
       let { keyWord } = this.$route.params;
       let {
         categoryName,
-        category1Id,
-        category2Id,
-        category3Id,
+        category1id,
+        category2id,
+        category3id,
       } = this.$route.query;
+
       //解包上面的搜索参数,然后把这些东西添加进去直接覆盖
       let searchParams = {
         ...this.searchParams,
         keyword: keyWord,
         categoryName,
-        category1Id,
-        category2Id,
-        category3Id,
+        category1id,
+        category2id,
+        category3id,
       };
+
       //如果这个参数是的空对象,就没必要,直接不搞
       //节省带宽,如果searchParams里面某个属性是空串,直接删了
       Object.keys(searchParams).forEach((item) => {
@@ -595,6 +648,7 @@ export default {
       this.getInfor();
     },
     removeCategoryName() {
+      this.searchParams.pageNo = 1;
       //删除上面的面包线内容
       this.searchParams.categoryName = '';
       this.handleSearchParams();
@@ -602,17 +656,21 @@ export default {
     },
     //删除上面的属性选择结果
     removeProps(index) {
+      this.searchParams.pageNo = 1;
       //直接从props数组里面移除index位置的数据
       this.searchParams.props.splice(index, 1);
       this.handleSearchParams();
     },
     removeKeyword() {
+      this.searchParams.pageNo = 1;
+      this.$bus.$emit('clearKeyWord');
       //删除面包线当中的关键字
       this.searchParams.keyword = '';
       this.handleSearchParams();
       this.$router.replace({ name: 'Search', query: this.$route.query });
     },
     removeTrademark() {
+      this.searchParams.pageNo = 1;
       //删除面包线里面的品牌
       this.searchParams.trademark = '';
       this.handleSearchParams();
@@ -623,7 +681,16 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      GoodList: (state) => state.search.goodListInfo,
+    }),
     ...mapGetters(['goodList']),
+    orderId() {
+      return this.searchParams.order.split(':')[0];
+    },
+    orderType() {
+      return this.searchParams.order.split(':')[1];
+    },
   },
   watch: {
     $route() {
@@ -654,6 +721,7 @@ export default {
       // //把搜索后的参数变为处理过的这个对象
       // this.searchParams = searchParams;
       // this.getInfor();
+
       this.handleSearchParams();
     },
   },

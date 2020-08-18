@@ -197,6 +197,7 @@ export default {
 
       //有data.categoryName说明点击的是a标签
       let { categoryname, category1id, category2id, category3id } = data;
+
       // console.log(data);
       if (categoryname) {
         let location = {
@@ -206,13 +207,15 @@ export default {
           categoryName: categoryname,
         };
         if (category1id) {
-          query.categoryId = category1id;
+          query.category1id = category1id;
         } else if (category2id) {
-          query.categoryId = category2id;
+          query.category2id = category2id;
         } else {
-          query.categoryId = category3id;
+          query.category3id = category3id;
         }
+
         location.query = query;
+
         if (this.$route.params) {
           location.params = this.$route.params;
         }

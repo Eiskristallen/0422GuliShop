@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
+import Detail from './Detail';
 // 把这俩合并到state里面,方便集中管理
 import user from './User';
 import home from './Home';
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     user,
     home,
     search,
+    Detail,
   },
 });

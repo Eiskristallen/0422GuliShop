@@ -51,5 +51,12 @@ export const reqGoodsListInfo = (searchParams) => {
     data: searchParams,
   });
 };
+
 //该请求参数由组件返回(用户搜索的关键词)
 // reqGoodsListInfo({});
+export const reqDetailInfor = (skuId) => {
+  return Ajax({
+    url: `/item/${skuId}`,
+    method: 'get',
+  });
+};
