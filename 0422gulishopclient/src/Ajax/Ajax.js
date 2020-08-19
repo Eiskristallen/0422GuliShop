@@ -3,6 +3,7 @@ import Nprogress from 'nprogress';
 //引入nprogress的css
 import 'nprogress/nprogress.css';
 import axios from 'axios';
+import store from '@/Store';
 // 二次封装axios,让返回来的直接是数据
 //1.配置基础路径和超时限制
 //2.统一处理请求错误
@@ -21,6 +22,9 @@ customAxios.interceptors.request.use(function(config) {
   //config 等同于请求报文
   //最后要return回去
   Nprogress.start(); //开始进度条
+
+  let userTempId = store.state.user.userTempId;
+  config.headers.userTempId = userTempId;
   return config;
   // 也可以写处理失败的回调函数,但是没有必要
 });

@@ -4,12 +4,21 @@ import Search from '@/pages/Search';
 import Register from '@/pages/Register';
 import Login from '@/pages/Login';
 import Detail from '@/pages/Detail';
+import ShopCart from '@/pages/ShopCart';
+import AddCartSuccess from '@/pages/AddCartSuccess';
 //路由配置文件模块化,都写在一个模块里,然后导出后引入
 export default {
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };
   },
   routes: [
+    { path: '/ShopCart', component: ShopCart, name: 'ShopCart' },
+    {
+      path: '/addcartsuccess',
+      component: AddCartSuccess,
+      name: 'AddCartSuccess',
+      children: [],
+    },
     {
       path: '/Detail/:keyWord?',
       component: Detail,

@@ -60,3 +60,18 @@ export const reqDetailInfor = (skuId) => {
     method: 'get',
   });
 };
+//添加或者修改购物车
+export const reqAddOrUpdateCart = (skuId, skuNum) => {
+  return Ajax({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: 'post',
+  });
+};
+
+//shopcart
+export const reqCart = () => {
+  return Ajax({
+    url: `/cart/cartList`,
+    method: 'get',
+  });
+};

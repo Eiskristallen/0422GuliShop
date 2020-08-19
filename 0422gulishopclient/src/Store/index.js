@@ -6,6 +6,7 @@ import Detail from './Detail';
 import user from './User';
 import home from './Home';
 import search from './Search';
+import shopCart from './ShoppingCart';
 
 const state = {};
 const getters = {};
@@ -23,5 +24,6 @@ export default new Vuex.Store({
     home,
     search,
     Detail,
+    shopCart,
   },
 });

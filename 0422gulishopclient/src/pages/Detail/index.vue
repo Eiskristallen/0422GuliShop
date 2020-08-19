@@ -16,9 +16,9 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :imgList="imgList" />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :imgList="imgList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <!-- skuInfor属性 -->
@@ -80,9 +80,10 @@
                 <dt class="title">{{ item.saleAttrName }}</dt>
                 <dd
                   changepirce="0"
-                  class="active"
                   v-for="spuAttr of item.spuSaleAttrValueList"
+                  :class="{ active: spuAttr.isChecked === '1' }"
                   :key="spuAttr.id"
+                  @click="changeIsChecked(spuAttr, item.spuSaleAttrValueList)"
                 >
                   {{ spuAttr.saleAttrValueName }}
                 </dd>
@@ -90,12 +91,19 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <!-- 点击这个按钮后会发物品的数据请求给后台,后台处理成功的话,会跳到加入成功页面 -->
+                <!-- 先发请求根据结果决定跳还是不跳,所以必须使用编程式导航, 得先发请求,成功才能跳,所以不能用router-link-->
+                <a href="javascript:" @click="addCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -353,6 +361,7 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      skuNum: 1,
       id: this.$route.params.keyWord,
     };
   },
@@ -361,8 +370,35 @@ export default {
   },
   name: 'Detail',
   methods: {
+    //添加购物车
+    async addCart() {
+      //先发请求给后台,后台成功跳转,失败不跳
+      try {
+        await this.$store.dispatch('addOrUpdateShoppingCart', {
+          skuId: this.skuInfo.id,
+          skuNum: this.skuNum,
+        });
+        alert('add to cart successful');
+        //购物车页需要商品的详细信息
+        //路由传参很蠢,所以用local storage存储
+        sessionStorage.setItem('SKUINFO_KEY', JSON.stringify(this.skuInfo));
+        this.$router.push('/addcartsuccess?skuNum=' + this.skuNum);
+        // 其实一定是成功的
+      } catch (error) {
+        // return new Promise((resolved, rejected) => {
+        //   rejected(error);
+        // });
+        alert(error.message);
+      }
+    },
     getDetailInfor() {
       this.$store.dispatch('getDetailInfor', this.id);
+    },
+    changeIsChecked(spuAttr, spuSaleAttrValueList) {
+      spuSaleAttrValueList.forEach((item) => {
+        item.isChecked = '0';
+      });
+      spuAttr.isChecked = '1';
     },
   },
 
@@ -372,6 +408,9 @@ export default {
   },
   computed: {
     ...mapGetters(['categoryView', 'skuInfo', 'spuSaleAttrList']),
+    imgList() {
+      return this.skuInfo.skuImageList || [];
+    },
   },
 };
 </script>
