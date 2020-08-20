@@ -75,3 +75,46 @@ export const reqCart = () => {
     method: 'get',
   });
 };
+///api/cart/checkCart/{skuID}/{isChecked}修改购物车选中状态 get
+export const reqUpdateIsChecked = (skuId, isChecked) => {
+  return Ajax({
+    url: `/cart/checkCart/${skuId}/${isChecked}`,
+    method: 'get',
+  });
+};
+//删除一个购物车
+
+export const reqDeleteCart = (skuId) => {
+  return Ajax({
+    url: `/cart/deleteCart/${skuId}`,
+    method: 'DELETE',
+  });
+};
+///user/passport/register
+export const reqRegister = (data) => {
+  return Ajax({
+    url: `/user/passport/register`,
+    method: 'POST',
+    data: data,
+  });
+};
+//user/passport/code
+// export const reqCode = (data) => {
+//   return Ajax({
+//     url: `/user/passport/code`,
+//     method: 'get',
+//   });
+// };
+export const reqLogin = (data) => {
+  return Ajax({
+    url: `user/passport/login`,
+    method: 'post',
+    data: data,
+  });
+};
+export const reqLogout = () => {
+  return Ajax({
+    url: `/user/passport/logout`,
+    method: 'get',
+  });
+};

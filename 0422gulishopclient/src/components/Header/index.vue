@@ -6,7 +6,23 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="$store.state.user.userInfor.name">
+            <span>请</span>
+            <!-- <router-link
+              :to="{
+                path: '/Login',
+                name:'Name'
+                params:'要传给路由组件的参数  '
+              }"
+              >登录</router-link
+            > 对象形写法-->
+            <a href="javascript:;">{{ $store.state.user.userInfor.name }}</a>
+            <a href="javascript:;" class="register" @click="logOut">logout</a>
+            <!-- <router-link to="/Login">登录</router-link> -->
+            <!-- <router-link to="/Register" class="register">免费注册</router-link> -->
+            <!-- <a href="###" class="register">免费注册</a> -->
+          </p>
+          <p v-else>
             <span>请</span>
             <!-- <router-link
               :to="{
@@ -78,6 +94,15 @@ export default {
   },
   name: 'Header',
   methods: {
+    async logOut() {
+      try {
+        await this.$store.dispatch('reqLogout');
+        this.$router.push('/Home');
+        alert('退出登录成功');
+      } catch (error) {
+        alert('退出登录失败');
+      }
+    },
     clearKeyWord() {
       this.keyWord = '';
     },
