@@ -118,3 +118,67 @@ export const reqLogout = () => {
     method: 'get',
   });
 };
+//创建订单交易页面
+export const reqTradeInfor = () => {
+  return Ajax({
+    url: `/order/auth/trade`,
+    method: `get`,
+  });
+};
+
+/* 
+{
+    "consignee": "admin",
+    "consigneeTel": "15011111111",
+    "deliveryAddress": "北京市昌平区2",
+    "paymentWay": "ONLINE",
+    "orderComment": "xxx",
+    "orderDetailList": [
+        {
+            "id": null,
+            "orderId": null,
+            "skuId": 6,
+            "skuName": " Apple iPhone 11 (A2223) 128GB 红色 移动联通电信22",
+            "imgUrl": "http://182.92.128.115:8080//rBFUDF6V0JmAG9XGAAGL4LZv5fQ163.png",
+            "orderPrice": 4343,
+            "skuNum": 2,
+            "hasStock": null
+        },
+        {
+            "id": null,
+            "orderId": null,
+            "skuId": 4,
+            "skuName": "Apple iPhone 11 (A2223) 128GB 红色",
+            "imgUrl": "http://182.92.128.115:80800/rBFUDF6VzaeANzIOAAL1X4gVWEE035.png",
+            "orderPrice": 5999,
+            "skuNum": 1,
+            "hasStock": null
+        }
+    ]
+}
+
+
+
+*/
+//交易数据里面有个交易编号tradeNo
+export const reqSubmitOrder = (tradeNo, data) => {
+  return Ajax({
+    url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method: 'post',
+    data: data,
+  });
+};
+export const reqPaymentInfor = (orderId) => {
+  return Ajax({
+    url: `/payment/weixin/createNative/${orderId}`,
+    method: 'get',
+  });
+};
+//订单支付状态
+export const reqPaymentState = (orderId) => {
+  return Ajax({
+    url: `/payment/weixin/queryPayStatus/${orderId}`,
+    method: 'GET',
+  });
+};
+//订单详情页面

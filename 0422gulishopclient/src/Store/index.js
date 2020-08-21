@@ -7,7 +7,7 @@ import user from './User';
 import home from './Home';
 import search from './Search';
 import shopCart from './ShoppingCart';
-
+import Trade from './Trade';
 const state = {};
 const getters = {};
 const actions = {}; //发请求拿数据
@@ -25,5 +25,6 @@ export default new Vuex.Store({
     search,
     Detail,
     shopCart,
+    Trade,
   },
 });

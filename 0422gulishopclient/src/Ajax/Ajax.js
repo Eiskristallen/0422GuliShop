@@ -20,6 +20,14 @@ const customAxios = axios.create({
 });
 customAxios.interceptors.request.use(function(config) {
   //config 等同于请求报文
+  //把登录后的token添加到请求头中
+
+  let token = store.state.user.userInfor.token;
+  //判断token是否存在
+  if (token) {
+    //如存在,则在请求头里面添加一个token
+    config.headers.token = token;
+  }
   //最后要return回去
   Nprogress.start(); //开始进度条
   //在请求头中添加一个uniqueID,保证在没有登录的情况下服务端能够根据这个ID正确的返回数据给用户

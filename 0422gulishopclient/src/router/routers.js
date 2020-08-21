@@ -6,12 +6,27 @@ import Login from '@/pages/Login';
 import Detail from '@/pages/Detail';
 import ShopCart from '@/pages/ShopCart';
 import AddCartSuccess from '@/pages/AddCartSuccess';
+import Trade from '@/pages/Trade';
+import Pay from '@/pages/Pay';
+import PaySuccess from '@/pages/PaySuccess';
 //路由配置文件模块化,都写在一个模块里,然后导出后引入
 export default {
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };
   },
   routes: [
+    {
+      path: '/PaySuccess',
+      component: PaySuccess,
+    },
+    {
+      path: '/Pay',
+      component: Pay,
+    },
+    {
+      path: '/Trade',
+      component: Trade,
+    },
     { path: '/ShopCart', component: ShopCart, name: 'ShopCart' },
     {
       path: '/addcartsuccess',
